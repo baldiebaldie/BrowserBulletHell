@@ -4,15 +4,18 @@
 
 const player = document.getElementById('player');
 const spike = document.getElementById('spike');
-const cannons = [
+const playableArea = document.querySelector('.playableArea');
 
-];
+//calculate player bounds
+const maxX = playableArea.clientWidth - player.offsetWidth;
+const maxY = playableArea.clientHeight - player.offsetHeight;
+
+
 
 let topPosition = 50;
 let leftPosition = 50;
-var speed = 1;
+var speed = 3;
 var cannonAmount = 11;
-
 
 //list which keeps track of current buttons pressed
 const keyPressed = {};
@@ -55,6 +58,23 @@ function update() {
         leftPosition += speed;
     }
 
+    //BORDER LOGIC
+    //hit the bottom, then set position to bottom border so it cannot go past
+    if(leftPosition < 0) {
+        leftPosition = 0;
+    }
+
+    if(leftPosition > maxX) {
+        leftPosition = maxX;
+    }
+
+    if(topPosition < 0) {
+        topPosition = 0;
+    }
+    //if the bottom hits the right border set it to the border
+    if(topPosition > maxY) {
+        topPosition = maxY;
+    }
 
 
     //udpate the actual div element
@@ -63,16 +83,17 @@ function update() {
 
 
     //check player collision logic
-    const currentSpikeLocation = spike.getBoundingClientRect();
-    const currentplayerLocation = player.getBoundingClientRect();
-    if (checkCollision(currentSpikeLocation, currentplayerLocation)) {
-        console.log("hit");
-        player.style.backgroundColor = 'white';
-    }
+    // const currentSpikeLocation = spike.getBoundingClientRect();
+    // const currentplayerLocation = player.getBoundingClientRect();
+    console.log(player.position);
+
+    // if (checkCollision(currentSpikeLocation, currentplayerLocation)) {
+    //     console.log("hit");
+    //     player.style.backgroundColor = 'white';
+    // }
 
     //starts the loop
     requestAnimationFrame(update);
-    // console.log("hello");
     
 }
 
