@@ -2,37 +2,44 @@ export function spawnCannons(sidebarId, count, isFlipped){
     
     const cannonArea = document.getElementById(sidebarId);
     
-    for(var i = 0; i<count; i++){
+    for(let i = 0; i<count; i++){
         const cannon = document.createElement('div');
             cannon.classList.add('cannon');
         
             if(isFlipped) {
                 cannon.classList.add('cannonFlipped')
             }
-            /*this switch case is meant to give each cannon a unique id
-            which is later used for shooting patters. 
-            */
-            // switch(sidebarId){
-            //     case ('cannonSidebarLeft'):
-            //         cannon.dataset.index = i;
-            //         break;
-            //     case ('cannonSidebarRight'):
-            //         cannon.dataset.index = (i+count);
-            //         break;
-            //     case ('cannonSidebarTop'):
-            //         cannon.dataset.index = (i+(2*count));
-            //         break;
-            //     case ('cannonSidebarBottom'):
-            //         cannon.dataset.index = (i+(3*count));
-            //         break;
+            // /*this switch case is meant to give each cannon a unique id
+            // which is later used for shooting patters. 
+            // */
+            switch(sidebarId){
+                case ('cannonSidebarLeft'):
+                    cannon.dataset.index = i;
+                    cannon.dataset.position = 
+                    break;
+                case ('cannonSidebarRight'):
+                    cannon.dataset.index = (i+count);
+                    break;
+                case ('cannonSidebarTop'):
+                    cannon.dataset.index = (i+(2*count));
+                    break;
+                case ('cannonSidebarBottom'):
+                    cannon.dataset.index = (i+(3*count));
+                    break;
 
-            // }
+            }
             cannonArea.appendChild(cannon);
     }
 }
 
 
-export function fireCannon(offset, playableArea, activeBullets) {
+export function pattern_staircase() {
+    for(let i = 0; i<count ; i++) {
+
+    }
+}
+
+export function fireCannon(xPosition, yPosition, playableArea, activeBullets) {
     const bullet = document.createElement('div');
     bullet.classList.add('bullet');
     
@@ -41,8 +48,8 @@ export function fireCannon(offset, playableArea, activeBullets) {
 
     const bulletData = {
         element: bullet,
-        x: 0,
-        y: offset,
+        x: xPosition,
+        y: yPosition,
         speed: 2
     }
     

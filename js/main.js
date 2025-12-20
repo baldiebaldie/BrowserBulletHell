@@ -1,73 +1,84 @@
 // main.js
 import { keyPressed } from './input.js';
-import { spawnCannons, checkCollision, fireCannon } from './cannonLogic.js';
+// import { spawnCannons, checkCollision, fireCannon } from './cannonLogic.js';
 
-const player = document.getElementById('player');
 const playableArea = document.querySelector('.playableArea');
 
-
 //variables
-let topPosition = 50;
-let leftPosition = 50;
-var speed = 3;
+let yStartingPosition = playableArea.clientWidth/2;
+let xStartingPosition = playableArea.clientHeight/2;
+var startingSpeed = 3;
 var cannonAmount = 11;
 let activeBullets = [];
 
+class player {
 
-//calculate player bounds
-const maxX = playableArea.clientWidth - player.offsetWidth;
-const maxY = playableArea.clientHeight - player.offsetHeight;
+    constructor(x, y, speed, element, playableArea) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.element = document.getElementById('player');
+        this.playableArea = playableArea;
+    }
 
-//initialize cannons
-spawnCannons('cannonSidebarLeft', cannonAmount, false);
-spawnCannons('cannonSidebarRight', cannonAmount, true);
-spawnCannons('cannonSidebarTop', cannonAmount, true);
-spawnCannons('cannonSidebarBottom', cannonAmount, true);
+     calculateBounds() {
+        this.yConstraint = playableArea.clientWidth - this.offsetWidth;
+        this.xConstraint = playableArea.clientHeight - this.offsetHeight;
+        if(this.x > this.xConstraint) {
+            this.x = this.xConstraint
+        }
 
+        //Validation check seeing that if player leaves bounds, it sets the position to that of the bound
+        if(this.y > this.yConstraint) {
+            this.y = this.yConstraint
+        }
 
+        if(this.x < 0) {
+            this.x = 0;
+        }
 
-//testing shooting
-for(let i = 0; i<cannonAmount; i++) {
-    var tmp = 50;
-    tmp+=50;
-    fireCannon(i * 65 + 30, playableArea, activeBullets);
+        if(this.y < 0) {
+            this.y = 0;
+        }
+     }
+
+    //handle the players inputs
+    handleInput(key) {
+        if(key['w']) {
+            this.y -= this.speed;
+        }
+        if(key['s']) {
+            this.y += this.speed;
+        }
+        if(key['a']) {
+            this.x -= this.speed;
+        }
+        if(key['d']) {
+            this.x += this.speed;
+        }
+    }
+     
+     draw () {
+        this.element.style.top = `${this.y}px`;
+        this.element.style.left = `${this.x}px`;
+     }
+
+     
 }
+//initialize cannons
+// spawnCannons('cannonSidebarLeft', cannonAmount, false);
+// spawnCannons('cannonSidebarRight', cannonAmount, true);
+// spawnCannons('cannonSidebarTop', cannonAmount, true);
+// spawnCannons('cannonSidebarBottom', cannonAmount, true);
 
 
+const myPlayer = new player(xStartingPosition, yStartingPosition, startingSpeed);
 //function which updates each frame
 function update() {
-    if(keyPressed['w']) {
-        topPosition -= speed;
-    }
-    if(keyPressed['s']) {
-        topPosition += speed;
-    }
-    if(keyPressed['a']) {
-        leftPosition -= speed;
-    }
-    if(keyPressed['d']) {
-        leftPosition += speed;
-    }
-
-    //BORDER LOGIC
-    //hit the bottom, then set position to bottom border so it cannot go past
-    if(leftPosition < 0) {
-        leftPosition = 0;
-    }
-
-    if(leftPosition > maxX) {
-        leftPosition = maxX;
-    }
-
-    if(topPosition < 0) {
-        topPosition = 0;
-    }
-    //if the bottom hits the right border set it to the border
-    if(topPosition > maxY) {
-        topPosition = maxY;
-    }
-
-
+    myPlayer.handleInput(keyPressed);
+    myPlayer.calculateBounds();
+    myPlayer.draw();
+    
     //bullet logic
     for (let i = activeBullets.length - 1; i>=0; i--) {
         let b = activeBullets[i];
@@ -83,21 +94,6 @@ function update() {
             activeBullets.splice(i, 1);
         }
     }
-
-    //udpate the actual div element
-    player.style.top = `${topPosition}px`;
-    player.style.left = `${leftPosition}px`;
-
-
-    //check player collision logic
-    // const currentSpikeLocation = spike.getBoundingClientRect();
-    // const currentplayerLocation = player.getBoundingClientRect();
-
-    // if (checkCollision(currentSpikeLocation, currentplayerLocation)) {
-    //     console.log("hit");
-    //     player.style.backgroundColor = 'white';
-    // }
-
     //starts the loop
     requestAnimationFrame(update);
     

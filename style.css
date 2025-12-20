@@ -6,6 +6,7 @@ body{
     justify-content: center; /* Centers vertically */
     min-height: 100vh;      /* Makes the body take up the full screen height */
     overflow: hidden;       /* Prevents accidental scrollbars */
+    background-color: rgb(41, 41, 41);
 }
 
 /*cannon area*/
@@ -53,13 +54,13 @@ body{
     /*Playable area*/
     position: relative;
 
-    height: 750px;
-    width: 750px;
+    height: 1000px;
+    width: 1000px;
     background-color: rgb(255,255,255);
     align-content: center;
 
     /* border stuff*/
-    border: 5px solid rgb(152, 152, 152);
+    border: 5px solid rgb(41, 41, 41);
     border-radius: 25px;
     overflow: hidden;
 }
@@ -71,10 +72,10 @@ body{
     height: 50px;
     width: 50px;
 
-    background-image: url("/assets/Th20Marisa.png");
     background-size: contain;
     background-repeat: no-repeat;
-
+    background-color: black;
+    border-radius: 25px;
     position: absolute;
 
 }
