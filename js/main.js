@@ -1,14 +1,15 @@
 // main.js
 import { keyPressed } from './input.js';
-import { spawnCannons, checkCollision } from './cannonLogic.js';
+import { spawnCannons, checkCollision , allCannons, randomPattern} from './cannonLogic.js';
 
 const playableArea = document.querySelector('.playableArea');
 
 //variables
+var frameCount = 0;
 let yStartingPosition = playableArea.clientWidth/2;
 let xStartingPosition = playableArea.clientHeight/2;
 var startingSpeed = 3;
-var cannonAmount = 11;
+var cannonAmount = 9;
 var cannonSize = 1;
 let activeBullets = [];
 
@@ -18,11 +19,17 @@ class player {
         this.x = x;
         this.y = y;
         this.speed = speed;
-        this.element = document.getElementById('player');
+        this.element = document.createElement('div');
         this.playableArea = playableArea;
+        this.createPlayer();
     }
 
-     calculateBounds() {
+    createPlayer() {
+        this.element.classList.add('player');
+        playableArea.appendChild(this.element);
+    }
+
+    calculateBounds() {
         this.yConstraint = playableArea.clientWidth - this.element.offsetWidth;
         this.xConstraint = playableArea.clientHeight - this.element.offsetHeight;
         console.log(this.yConstraint, this.xConstraint);
@@ -42,7 +49,7 @@ class player {
         if(this.y < 0) {
             this.y = 0;
         }
-     }
+    }
 
     //handle the players inputs
     handleInput(key) {
@@ -73,29 +80,20 @@ spawnCannons(cannonAmount, cannonSize, 'cannonSidebarRight');
 spawnCannons(cannonAmount, cannonSize, 'cannonSidebarTop');
 spawnCannons(cannonAmount, cannonSize, 'cannonSidebarBottom');
 
+//create the player
+const myPlayer = new player(xStartingPosition, yStartingPosition, startingSpeed, playableArea);
 
-const myPlayer = new player(xStartingPosition, yStartingPosition, startingSpeed);
 //function which updates each frame
 function update() {
     myPlayer.handleInput(keyPressed);
     myPlayer.calculateBounds();
     myPlayer.draw();
     
-    //bullet logic
-    for (let i = activeBullets.length - 1; i>=0; i--) {
-        let b = activeBullets[i];
+    //random cannon shooting pattern
+    randomPattern(frameCount, activeBullets, playableArea);
+    frameCount++;
 
-        //moveBullet
-        b.x += b.speed;
-        b.element.style.left = `${b.x}px`;
-        b.element.style.top = `${b.y}px`;
 
-        //despawn logic
-        if (b.x > playableArea.clientWidth) {
-            b.element.remove();
-            activeBullets.splice(i, 1);
-        }
-    }
     //starts the loop
     requestAnimationFrame(update);
     
