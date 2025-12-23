@@ -1,6 +1,7 @@
 // main.js
 import { keyPressed } from './input.js';
-import { spawnCannons, checkCollision , allCannons, randomPattern} from './cannonLogic.js';
+import { spawnCannons, randomPattern} from './cannonLogic.js';
+
 
 const playableArea = document.querySelector('.playableArea');
 
@@ -12,6 +13,7 @@ var startingSpeed = 3;
 var cannonAmount = 9;
 var cannonSize = 1;
 let activeBullets = [];
+let lives = 3;
 
 class player {
 
@@ -21,6 +23,14 @@ class player {
         this.speed = speed;
         this.element = document.createElement('div');
         this.playableArea = playableArea;
+
+        //hit detection properties
+        this.isHit = false;
+        this.isInvincible = false;
+        this.hitTimer = 0;
+        this.invincibilityDuration = 1000; // 1 second of invincibility
+        this.flashDuration = 150; // 150ms red flash
+
         this.createPlayer();
     }
 
@@ -32,7 +42,7 @@ class player {
     calculateBounds() {
         this.yConstraint = playableArea.clientWidth - this.element.offsetWidth;
         this.xConstraint = playableArea.clientHeight - this.element.offsetHeight;
-        console.log(this.yConstraint, this.xConstraint);
+        // console.log(this.yConstraint, this.xConstraint);
         if(this.x > this.xConstraint) {
             this.x = this.xConstraint
         }
@@ -70,9 +80,37 @@ class player {
      draw () {
         this.element.style.top = `${this.y}px`;
         this.element.style.left = `${this.x}px`;
+
+        //handle hit visual feedback
+        if (this.isHit) {
+            const timeSinceHit = Date.now() - this.hitTimer;
+
+            if (timeSinceHit < this.flashDuration) {
+                // Flash red during flash duration
+                this.element.style.backgroundColor = 'red';
+            } else if (timeSinceHit < this.invincibilityDuration) {
+                // Still invincible but not flashing - return to black
+                this.element.style.backgroundColor = 'black';
+            } else {
+                // Invincibility expired - reset state
+                this.isHit = false;
+                this.isInvincible = false;
+                this.element.style.backgroundColor = 'black';
+            }
+        }
      }
 
-     
+     onHit() {
+        if (!this.isInvincible) {
+            this.isHit = true;
+            this.isInvincible = true;
+            this.hitTimer = Date.now();
+            lives -= 1;
+            console.log(`Lives remaining: ${lives}`);
+        }
+     }
+
+
 }
 //initialize cannons
 spawnCannons(cannonAmount, cannonSize, 'cannonSidebarLeft');
@@ -90,9 +128,8 @@ function update() {
     myPlayer.draw();
     
     //random cannon shooting pattern
-    randomPattern(frameCount, activeBullets, playableArea);
+    randomPattern(frameCount, activeBullets, playableArea, myPlayer);
     frameCount++;
-
 
     //starts the loop
     requestAnimationFrame(update);

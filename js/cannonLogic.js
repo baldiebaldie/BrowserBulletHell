@@ -116,9 +116,9 @@ export function spawnCannons(count, size, sidebarId) {
     var bottomCannons = allCannons.filter(c => c.side === 'cannonSidebarBottom');
 }
 
-export function randomPattern(frameCount, activeBullets, playableArea) {
-    //bullet logic (every 20 frames)
-    if(frameCount % 20 == 0) {
+export function randomPattern(frameCount, activeBullets, playableArea, myPlayer) {
+    //bullet logic (every 5 frames)
+    if(frameCount % 5 == 0) {
         let randomCannonIndex = Math.floor(Math.random() * allCannons.length)
         let randomCannon = allCannons[randomCannonIndex];
 
@@ -128,18 +128,42 @@ export function randomPattern(frameCount, activeBullets, playableArea) {
     for (let i = activeBullets.length - 1; i>=0; i--) {
         let b = activeBullets[i];
 
+        //get the actual "Hitbox" rectangles from the DOM elements
+        let playerRect = myPlayer.element.getBoundingClientRect()
+        let bulletRect = b.element.getBoundingClientRect()
+
+
         //moveBullet
         b.x += b.xVelocity;
         b.y += b.yVelocity;
         b.element.style.left = `${b.x}px`;
         b.element.style.top = `${b.y}px`;
 
+        //check collision first
+        if(checkCollision(playerRect, bulletRect)) {
+            myPlayer.onHit();
+            // Remove bullet on collision
+            b.element.remove();
+            activeBullets.splice(i, 1);
+            continue; // Skip despawn check since bullet is already removed
+        }
+
         //despawn logic
-        if (b.x > playableArea.clientWidth) {
+        if(checkDespawn(b, playableArea, activeBullets)) {
             b.element.remove();
             activeBullets.splice(i, 1);
         }
     }
+
+
+}
+
+function checkDespawn(bullet, playableArea, activeBullets) {
+    //if it leaves the right side
+    if (bullet.x > playableArea.clientWidth || bullet.x < 0 || bullet.y > playableArea.clientHeight || bullet.y < 0) {
+        return true;
+    }
+    return false;
 }
 
 export function checkCollision (obj1, obj2){
