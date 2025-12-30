@@ -14,7 +14,7 @@ let yStartingPosition = playableArea.clientWidth/2;
 let xStartingPosition = playableArea.clientHeight/2;
 var cannonSize = 1;
 let activeBullets = [];
-let maxLives = 3; // Adjust this value to change starting lives
+let maxLives = 3; //adjust this value to change starting lives
 let lives = maxLives;
 let gameOver = false;
 
@@ -26,7 +26,7 @@ const gameConfig = {
     onCannonCountChange: null
 };
 
-// Initialize hearts display
+//initialize hearts display
 function initializeLivesDisplay() {
     for (let i = 0; i < maxLives; i++) {
         const heart = document.createElement('img');
@@ -36,7 +36,7 @@ function initializeLivesDisplay() {
     }
 }
 
-// Update lives display
+//update lives display
 function updateLivesDisplay() {
     const hearts = heartsContainer.querySelectorAll('.heart');
     hearts.forEach((heart, index) => {
@@ -183,7 +183,7 @@ function respawnCannons(newCount, size) {
 //create the player
 const myPlayer = new player(xStartingPosition, yStartingPosition, gameConfig.playerSpeed, playableArea);
 
-// Initialize lives display
+//initialize lives display
 initializeLivesDisplay();
 
 //function which updates each frame
