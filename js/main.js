@@ -5,6 +5,8 @@ import { initializeControlPanel } from './controlPanel.js';
 
 
 const playableArea = document.querySelector('.playableArea');
+const heartsContainer = document.getElementById('heartsContainer');
+const gameOverDisplay = document.getElementById('gameOverDisplay');
 
 //variables
 var frameCount = 0;
@@ -12,7 +14,9 @@ let yStartingPosition = playableArea.clientWidth/2;
 let xStartingPosition = playableArea.clientHeight/2;
 var cannonSize = 1;
 let activeBullets = [];
-let lives = 3;
+let maxLives = 3; // Adjust this value to change starting lives
+let lives = maxLives;
+let gameOver = false;
 
 const gameConfig = {
     playerSpeed: 3,
@@ -21,6 +25,29 @@ const gameConfig = {
     cannonCount: 15,
     onCannonCountChange: null
 };
+
+// Initialize hearts display
+function initializeLivesDisplay() {
+    for (let i = 0; i < maxLives; i++) {
+        const heart = document.createElement('img');
+        heart.src = 'assets/heart.jpeg';
+        heart.classList.add('heart');
+        heartsContainer.appendChild(heart);
+    }
+}
+
+// Update lives display
+function updateLivesDisplay() {
+    const hearts = heartsContainer.querySelectorAll('.heart');
+    hearts.forEach((heart, index) => {
+        heart.classList.toggle('hidden', index >= lives);
+    });
+
+    if (lives <= 0 && !gameOver) {
+        gameOver = true;
+        gameOverDisplay.style.display = 'flex';
+    }
+}
 
 class player {
 
@@ -114,6 +141,7 @@ class player {
             this.hitTimer = Date.now();
             lives -= 1;
             console.log(`Lives remaining: ${lives}`);
+            updateLivesDisplay();
         }
      }
 
@@ -154,6 +182,9 @@ function respawnCannons(newCount, size) {
 
 //create the player
 const myPlayer = new player(xStartingPosition, yStartingPosition, gameConfig.playerSpeed, playableArea);
+
+// Initialize lives display
+initializeLivesDisplay();
 
 //function which updates each frame
 function update() {
