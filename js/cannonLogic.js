@@ -1,4 +1,4 @@
-var startingBulletSpeed = 5;
+export let startingBulletSpeed = 1;
 var startingSize = 1;
 export var allCannons = [];
 
@@ -17,47 +17,63 @@ class cannon {
         
     }
 
-    fire(playableArea, activeBullets) {
+    fire(playableArea, activeBullets, externalBulletSpeed = null) {
+        const bulletSpeed = externalBulletSpeed !== null ? externalBulletSpeed : startingBulletSpeed;
         let cannonPosition = this.element.getBoundingClientRect();
         let areaRect = playableArea.getBoundingClientRect();
 
-        let spawnPositionX = cannonPosition.left - areaRect.left;
-        let spawnPositionY = cannonPosition.top - areaRect.top;
 
+        // console.log(cannonPosition.top , this.side);
 
         var xVelocity;
         var yVelocity;
+        var bulletColor;
+        var spawnPositionX;
+        var spawnPositionY;
 
 
         //handle inital direction
         switch(this.side) {
             case ('cannonSidebarLeft'):
-                xVelocity = 1 * startingBulletSpeed;
+                xVelocity = 1 * bulletSpeed;
                 yVelocity = 0;
+                spawnPositionX = cannonPosition.right - areaRect.left;
+                spawnPositionY = cannonPosition.top - areaRect.top + (cannonPosition.height / 2);
+                // console.log(spawnPositionX, spawnPositionY, this.side);
+                bulletColor = 'red';
                 break;
             case ('cannonSidebarRight'):
-                xVelocity = -1 * startingBulletSpeed;
+                xVelocity = -1 * bulletSpeed;
                 yVelocity = 0;
+                spawnPositionX = cannonPosition.left - areaRect.left;
+                spawnPositionY = cannonPosition.top - areaRect.top + (cannonPosition.height / 2);
+                // console.log(spawnPositionX, spawnPositionY, this.side);
+                bulletColor = 'blue';
                 break;
             case ('cannonSidebarTop'):
                 xVelocity = 0;
-                yVelocity = 1 * startingBulletSpeed;
+                yVelocity = 1 * bulletSpeed;
+                spawnPositionX = cannonPosition.left - areaRect.left + (cannonPosition.width / 2);
+                spawnPositionY = cannonPosition.bottom - areaRect.top;
+                // console.log(spawnPositionX, spawnPositionY, this.side);
+                bulletColor = 'green';
                 break;
             case ('cannonSidebarBottom'):
                 xVelocity = 0;
-                yVelocity = -1 * startingBulletSpeed;
+                yVelocity = -1 * bulletSpeed;
+                spawnPositionX = cannonPosition.left - areaRect.left + (cannonPosition.width / 2);
+                spawnPositionY = cannonPosition.top - areaRect.top;
+                // console.log(spawnPositionX, spawnPositionY, this.side);
+                bulletColor = 'purple';
                 break;
         }
 
-        let myBullet = new bullet(startingBulletSpeed, startingSize, xVelocity, yVelocity, spawnPositionX, spawnPositionY);
+        let myBullet = new bullet(bulletSpeed, startingSize, xVelocity, yVelocity, spawnPositionX, spawnPositionY, bulletColor);
 
         //create the HTML element for it
         myBullet.element.classList.add('bullet');
         myBullet.element.style.position = 'absolute';
-
-        //draw bullet
-        myBullet.element.style.left = `${spawnPositionX}px`;
-        myBullet.element.style.top = `${spawnPositionY}px`;
+        myBullet.element.style.backgroundColor = bulletColor;
 
         playableArea.appendChild(myBullet.element);
         activeBullets.push(myBullet);
@@ -66,7 +82,7 @@ class cannon {
 }
 
 class bullet {
-    constructor (speed, size, xVelocity, yVelocity, startingX, startingY) {
+    constructor (speed, size, xVelocity, yVelocity, startingX, startingY, bulletColor) {
         this.speed = speed;
         this.size = size;
         this.element = document.createElement('div');
@@ -76,11 +92,35 @@ class bullet {
         this.y = startingY;
         this.startingX = startingX;
         this.startingY = startingY;
+        this.bulletColor = bulletColor;
     }
 
 }
 
 export function spawnCannons(count, size, sidebarId) {
+    //calculate sizing based on cannon count
+    const baseCannonSize = 75;
+    const baseGap = 15;
+    const playableAreaSize = 750; 
+    const sidebarPadding = 100; //50px on each side
+
+    //calculate available space (accounting for padding)
+    const availableSpace = playableAreaSize + sidebarPadding;
+
+    //calculate total space needed with base values
+    const totalSpaceNeeded = (count * baseCannonSize) + ((count - 1) * baseGap);
+
+    //scale factor to fit cannons into available space
+    const scaleFactor = Math.min(1, availableSpace / totalSpaceNeeded);
+
+    //apply scale factor to both size and gap
+    const cannonSize = Math.floor(baseCannonSize * scaleFactor);
+    const gap = Math.floor(baseGap * scaleFactor);
+
+    //apply the dynamic gap to the sidebar
+    let sidebar = document.getElementById(sidebarId);
+    sidebar.style.gap = `${gap}px`;
+
     for(let i = 0; i<count; i ++) {
         let c = new cannon(sidebarId, i, size);
         switch (sidebarId) {
@@ -97,7 +137,6 @@ export function spawnCannons(count, size, sidebarId) {
                 c.index = (i+(3*count));
                 break;
         }
-        let sidebar = document.getElementById(sidebarId);
         sidebar.appendChild(c.element);
         allCannons.push(c);
         if(sidebarId == 'cannonSidebarRight') {
@@ -106,6 +145,10 @@ export function spawnCannons(count, size, sidebarId) {
         else {
             c.element.classList.add('cannon');
         }
+
+        // Apply dynamic size to each cannon
+        c.element.style.width = `${cannonSize}px`;
+        c.element.style.height = `${cannonSize}px`;
 
     }
     
@@ -116,13 +159,14 @@ export function spawnCannons(count, size, sidebarId) {
     var bottomCannons = allCannons.filter(c => c.side === 'cannonSidebarBottom');
 }
 
-export function randomPattern(frameCount, activeBullets, playableArea, myPlayer) {
-    //bullet logic (every 5 frames)
-    if(frameCount % 5 == 0) {
+export function randomPattern(frameCount, activeBullets, playableArea, myPlayer, fireRate = 100, bulletSpeed = 1) {
+    //bullet logic (every 50 frames)
+    if(frameCount % fireRate == 0) {
         let randomCannonIndex = Math.floor(Math.random() * allCannons.length)
         let randomCannon = allCannons[randomCannonIndex];
 
-        randomCannon.fire(playableArea, activeBullets);
+        randomCannon.fire(playableArea, activeBullets, bulletSpeed);
+        // console.log(randomCannon);
     }
 
     for (let i = activeBullets.length - 1; i>=0; i--) {
@@ -140,25 +184,21 @@ export function randomPattern(frameCount, activeBullets, playableArea, myPlayer)
         b.element.style.top = `${b.y}px`;
 
         //check collision first
-        if(checkCollision(playerRect, bulletRect)) {
+        const hit = checkCollision(playerRect, bulletRect);
+        const outOfBounds = checkDespawn(b, playableArea)
+        if(hit) {
             myPlayer.onHit();
-            // Remove bullet on collision
-            b.element.remove();
-            activeBullets.splice(i, 1);
-            continue; // Skip despawn check since bullet is already removed
         }
 
         //despawn logic
-        if(checkDespawn(b, playableArea, activeBullets)) {
+        if(hit || outOfBounds) {
             b.element.remove();
             activeBullets.splice(i, 1);
         }
     }
-
-
 }
 
-function checkDespawn(bullet, playableArea, activeBullets) {
+function checkDespawn(bullet, playableArea) {
     //if it leaves the right side
     if (bullet.x > playableArea.clientWidth || bullet.x < 0 || bullet.y > playableArea.clientHeight || bullet.y < 0) {
         return true;
@@ -166,7 +206,8 @@ function checkDespawn(bullet, playableArea, activeBullets) {
     return false;
 }
 
-export function checkCollision (obj1, obj2){
+export function checkCollision (obj1, obj2) {
+    
     return (
         obj1.left < obj2.right && 
         obj1.right > obj2.left &&

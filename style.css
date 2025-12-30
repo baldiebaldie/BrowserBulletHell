@@ -18,7 +18,7 @@ body{
 
     /* border stuff*/
     border-radius: 25px;
-    padding: 50px;
+    padding: 25px;
 }
 
 /* cannon sidebar stuff */
@@ -109,7 +109,6 @@ body{
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-
     position: relative;
 
 }
@@ -126,3 +125,92 @@ body{
     position: relative;
 
 }
+
+/* Control Panel */
+#controlPanel {
+    display: flex;
+    gap: 30px;
+    padding: 20px 40px;
+    background-color: rgb(35, 35, 35);
+    border: 2px solid rgb(60, 60, 60);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.sliderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 150px;
+}
+
+.sliderContainer label {
+    color: rgb(200, 200, 200);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.slider {
+    width: 120px;
+    height: 5px;
+    border-radius: 3px;
+    background: linear-gradient(to right, rgb(80, 80, 80), rgb(120, 120, 120));
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgb(100, 150, 255), rgb(100, 200, 255));
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: linear-gradient(135deg, rgb(120, 170, 255), rgb(120, 220, 255));
+    box-shadow: 0 4px 8px rgba(100, 150, 255, 0.4);
+}
+
+.slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgb(100, 150, 255), rgb(100, 200, 255));
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    background: linear-gradient(135deg, rgb(120, 170, 255), rgb(120, 220, 255));
+    box-shadow: 0 4px 8px rgba(100, 150, 255, 0.4);
+}
+
+.sliderValue {
+    color: rgb(100, 200, 255);
+    font-size: 13px;
+    font-weight: 500;
+    min-width: 40px;
+    text-align: center;
+}
+/* 
+.lives {
+    a
+} */

@@ -7,6 +7,32 @@
     <title>Bullet hell minigame</title>
   </head>
   <body>
+    <div id="controlPanel">
+      <div class="sliderContainer">
+        <label for="playerSpeedSlider">Player Speed</label>
+        <input type="range" id="playerSpeedSlider" min="1" max="10" value="3" step="0.5" class="slider" />
+        <span id="playerSpeedValue" class="sliderValue">3.0</span>
+      </div>
+
+      <div class="sliderContainer">
+        <label for="bulletSpeedSlider">Bullet Speed</label>
+        <input type="range" id="bulletSpeedSlider" min="0.5" max="5" value="1" step="0.5" class="slider" />
+        <span id="bulletSpeedValue" class="sliderValue">1.0</span>
+      </div>
+
+      <div class="sliderContainer">
+        <label for="fireRateSlider">Fire Rate (frames)</label>
+        <input type="range" id="fireRateSlider" min="20" max="200" value="100" step="5" class="slider" />
+        <span id="fireRateValue" class="sliderValue">100</span>
+      </div>
+
+      <div class="sliderContainer">
+        <label for="cannonCountSlider">Cannon Count</label>
+        <input type="range" id="cannonCountSlider" min="5" max="25" value="15" step="1" class="slider" />
+        <span id="cannonCountValue" class="sliderValue">15</span>
+      </div>
+    </div>
+
     <h1 id="titleText">Dodge the Bullets</h1>
     <div id="cannonRing">
       <div id="cannonSidebarTop" class="sidebar horizontalSidebar"></div>
