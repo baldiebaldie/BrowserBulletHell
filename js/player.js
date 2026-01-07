@@ -115,7 +115,7 @@ export class Player {
             this.isInvincible = true;
             
             //play damage effect
-            const hitSound = new Audio('/assets/Damaged.mp3');
+            const hitSound = new Audio('./assets/Damaged.mp3');
             hitSound.volume = 0.1;
 
             hitSound.play();
