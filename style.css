@@ -105,15 +105,13 @@ body{
 
 .player{
 
-    height: 20px;
-    width: 20px;
+    height: 65px;
+    width: 65px;
 
-
-    
+    background-image: url(./assets/playerIcon.png);
     background-size: contain;
     background-repeat: no-repeat;
-    background-color: black;
-    border-radius: 25px;
+    background-position: center;
     position: absolute;
 
 }
