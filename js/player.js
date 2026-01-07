@@ -62,7 +62,7 @@ export class Player {
 
         //handle half speed
         const currentSpeed = (key['Shift'] || key['shift']) ? this.speed / 2 : this.speed;
-        console.log(currentSpeed);
+        // console.log(currentSpeed);
         
         if(key['w'] || key['ArrowUp']) {
             this.y -= currentSpeed;
