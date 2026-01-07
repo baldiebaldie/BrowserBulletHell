@@ -59,17 +59,22 @@ export class player {
 
     //handle the players inputs
     handleInput(key) {
+
+        //handle half speed
+        const currentSpeed = (key['Shift'] || key['shift']) ? 1 : this.speed;
+        console.log(currentSpeed);
+        
         if(key['w'] || key['ArrowUp']) {
-            this.y -= this.speed;
+            this.y -= currentSpeed;
         }
         if(key['s'] || key['ArrowDown']) {
-            this.y += this.speed;
+            this.y += currentSpeed;
         }
         if(key['a'] || key['ArrowLeft']) {
-            this.x -= this.speed;
+            this.x -= currentSpeed;
         }
         if(key['d'] || key['ArrowRight']) {
-            this.x += this.speed;
+            this.x += currentSpeed;
         }
     }
      
@@ -108,6 +113,10 @@ export class player {
             this.onHit();
             this.isHit = true;
             this.isInvincible = true;
+            
+            //play damage effect
+            const hitSound = new Audio('/assets/Damaged.mp3');
+            hitSound.play();
             this.hitTimer = Date.now();
         }
 
