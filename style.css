@@ -9,6 +9,25 @@ body{
     background-color: rgb(41, 41, 41);
 }
 
+/* Game Title */
+#gameTitle {
+    color: #5E57FF;
+    font-size: 56px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
+    text-shadow:
+        0 0 5px rgba(255, 255, 255, 1),
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(94, 87, 255, 1),
+        0 0 40px rgba(94, 87, 255, 0.8),
+        0 0 60px rgba(94, 87, 255, 0.6),
+        0 0 80px rgba(94, 87, 255, 0.4);
+}
+
 /*cannon area*/
 #cannonRing {
     position: relative;     /* Allows internal elements to be positioned relatively */

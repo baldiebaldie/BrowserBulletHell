@@ -8,6 +8,7 @@ import { player } from './player.js';
 const playableArea = document.querySelector('.playableArea');
 const heartsContainer = document.getElementById('heartsContainer');
 const gameOverDisplay = document.getElementById('gameOverDisplay');
+const backgroundMusic = document.getElementById('backgroundMusic');
 
 //localStorage functions for high score persistence
 function saveHighScore(score) {
@@ -171,6 +172,25 @@ initializeLivesDisplay();
 
 //initialize high score display
 updateHighScoreDisplay();
+
+//setup background music
+if (backgroundMusic) {
+    backgroundMusic.volume = 0.5; // Set to half volume
+
+    // Start at a random position in the song
+    backgroundMusic.addEventListener('loadedmetadata', () => {
+        const randomStart = Math.random() * backgroundMusic.duration;
+        backgroundMusic.currentTime = randomStart;
+    });
+
+    backgroundMusic.play().catch(error => {
+        console.log('Background music autoplay prevented:', error);
+        // Music will start on first user interaction
+        document.addEventListener('click', () => {
+            backgroundMusic.play();
+        }, { once: true });
+    });
+}
 
 //setup play again button
 const playAgainButton = document.getElementById('playAgainButton');
