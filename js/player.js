@@ -86,7 +86,7 @@ export class player {
                 this.element.style.backgroundColor = 'red';
             } else if (timeSinceHit < this.invincibilityDuration) {
                 // Still invincible but not flashing - return to black
-                this.element.style.backgroundColor = 'grey';
+                this.element.style.backgroundColor = 'dark grey';
             } else {
                 // Invincibility expired - reset state
                 this.isHit = false;
