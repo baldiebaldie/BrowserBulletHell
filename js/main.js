@@ -44,7 +44,7 @@ const gameConfig = {
     playerSpeed: 3,
     bulletSpeed: 1,
     fireRate: 100,
-    cannonCount: 15,
+    cannonCount: 9,
     spawnsPerTick: 1,
     onCannonCountChange: null
 };
