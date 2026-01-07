@@ -2,7 +2,7 @@ const playableArea = document.querySelector('.playableArea');
 
 
 
-export class player {
+export class Player {
 
     constructor(speed, playableArea, onHit) {
         
@@ -61,7 +61,7 @@ export class player {
     handleInput(key) {
 
         //handle half speed
-        const currentSpeed = (key['Shift'] || key['shift']) ? 1 : this.speed;
+        const currentSpeed = (key['Shift'] || key['shift']) ? this.speed / 2 : this.speed;
         console.log(currentSpeed);
         
         if(key['w'] || key['ArrowUp']) {

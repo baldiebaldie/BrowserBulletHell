@@ -1,101 +1,10 @@
+import { Cannon } from './cannon.js';
+
+
 export let startingBulletSpeed = 1;
 var startingSize = 1;
 export var allCannons = [];
 
-class cannon {
-    constructor (side, index, size) {
-        this.side = side;
-        this.index = index;
-        this.element = document.createElement('div');
-        this.size = size;
-        if(side == 'right' || side == 'bottom') {
-            this.isFlipped = true;
-        }
-        else {
-            this.isFlipped = false;
-        }
-        
-    }
-
-    fire(playableArea, activeBullets, externalBulletSpeed = null) {
-        const bulletSpeed = externalBulletSpeed !== null ? externalBulletSpeed : startingBulletSpeed;
-        let cannonPosition = this.element.getBoundingClientRect();
-        let areaRect = playableArea.getBoundingClientRect();
-
-
-        // console.log(cannonPosition.top , this.side);
-
-        var xVelocity;
-        var yVelocity;
-        var bulletColor;
-        var spawnPositionX;
-        var spawnPositionY;
-
-
-        //handle inital direction
-        switch(this.side) {
-            case ('cannonSidebarLeft'):
-                xVelocity = 1 * bulletSpeed;
-                yVelocity = 0;
-                spawnPositionX = cannonPosition.right - areaRect.left;
-                spawnPositionY = cannonPosition.top - areaRect.top + (cannonPosition.height / 2);
-                // console.log(spawnPositionX, spawnPositionY, this.side);
-                // bulletColor = 'red';
-                break;
-            case ('cannonSidebarRight'):
-                xVelocity = -1 * bulletSpeed;
-                yVelocity = 0;
-                spawnPositionX = cannonPosition.left - areaRect.left;
-                spawnPositionY = cannonPosition.top - areaRect.top + (cannonPosition.height / 2);
-                // console.log(spawnPositionX, spawnPositionY, this.side);
-                // bulletColor = 'blue';
-                break;
-            case ('cannonSidebarTop'):
-                xVelocity = 0;
-                yVelocity = 1 * bulletSpeed;
-                spawnPositionX = cannonPosition.left - areaRect.left + (cannonPosition.width / 2);
-                spawnPositionY = cannonPosition.bottom - areaRect.top;
-                // console.log(spawnPositionX, spawnPositionY, this.side);
-                // bulletColor = 'green';
-                break;
-            case ('cannonSidebarBottom'):
-                xVelocity = 0;
-                yVelocity = -1 * bulletSpeed;
-                spawnPositionX = cannonPosition.left - areaRect.left + (cannonPosition.width / 2);
-                spawnPositionY = cannonPosition.top - areaRect.top;
-                // console.log(spawnPositionX, spawnPositionY, this.side);
-                // bulletColor = 'purple';
-                break;
-        }
-
-        let myBullet = new bullet(bulletSpeed, startingSize, xVelocity, yVelocity, spawnPositionX, spawnPositionY, bulletColor);
-
-        //create the HTML element for it
-        myBullet.element.classList.add('bullet');
-        myBullet.element.style.position = 'absolute';
-        myBullet.element.style.backgroundColor = bulletColor;
-
-        playableArea.appendChild(myBullet.element);
-        activeBullets.push(myBullet);
-    }
-
-}
-
-class bullet {
-    constructor (speed, size, xVelocity, yVelocity, startingX, startingY, bulletColor) {
-        this.speed = speed;
-        this.size = size;
-        this.element = document.createElement('div');
-        this.xVelocity = xVelocity;
-        this.yVelocity = yVelocity;
-        this.x = startingX;
-        this.y = startingY;
-        this.startingX = startingX;
-        this.startingY = startingY;
-        this.bulletColor = bulletColor;
-    }
-
-}
 
 export function spawnCannons(count, size, sidebarId) {
     //calculate sizing based on cannon count
@@ -121,7 +30,7 @@ export function spawnCannons(count, size, sidebarId) {
     sidebar.style.gap = `${gap}px`;
 
     for(let i = 0; i<count; i ++) {
-        let c = new cannon(sidebarId, i, size);
+        let c = new Cannon(sidebarId, i, size);
         switch (sidebarId) {
             case ('cannonSidebarLeft'):
                 c.index = i;
@@ -202,4 +111,8 @@ function checkDespawn(bullet, playableArea) {
         return true;
     }
     return false;
+}
+
+function handleFire () {
+    
 }

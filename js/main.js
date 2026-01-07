@@ -9,10 +9,11 @@
 import { keyPressed } from './input.js';
 import { spawnCannons, randomPattern, allCannons} from './cannonLogic.js';
 import { initializeControlPanel } from './controlPanel.js';
-import { player } from './player.js';
+import { Player } from './player.js';
+import { Cannon } from './cannon.js';
 
-//signiture
 
+//sig
 console.log(
   "%c Kinetic Core %c Built by Bryan Baldie %c",
   "background: #222; color: #bada55; padding: 5px; font-weight: bold;",
@@ -185,7 +186,7 @@ function respawnCannons(newCount, size) {
 }
 
 //create the player
-const myPlayer = new player(gameConfig.playerSpeed, playableArea, handleLives);
+const myPlayer = new Player(gameConfig.playerSpeed, playableArea, handleLives);
 
 //initialize lives display
 initializeLivesDisplay();
