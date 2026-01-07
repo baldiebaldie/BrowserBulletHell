@@ -32,9 +32,9 @@ Precision: Use Focus Mode when you need to weave through very tight gaps between
 
   [✓] UI: Make a easy to use yet pleasant UI where users can choose to play or customize their character if they wish
 
-  [ ] Patterns: Allow for different spawners to shoot projectiles at variable rates, patters, speeds, etc. to freshen gameplay experience
+  [✓] Character Icon: Implement spaceship player icon with trail
 
-  [ ] Character Icon: Allow for different selectable character icons
+  [ ] Patterns: Allow for different spawners to shoot projectiles at variable rates, patters, speeds, etc. to freshen gameplay experience
 
 ### How to Clear Your High Score
 
