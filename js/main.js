@@ -197,18 +197,12 @@ updateHighScoreDisplay();
 //setup background music
 if (backgroundMusic) {
     backgroundMusic.volume = 0.05; // Set to half volume
-
-    // Start at a random position in the song
-    backgroundMusic.addEventListener('loadedmetadata', () => {
-        const randomStart = Math.random() * backgroundMusic.duration;
-        backgroundMusic.currentTime = randomStart;
-        console.log(randomStart);
-    });
-
     backgroundMusic.play().catch(error => {
         console.log('Background music autoplay prevented:', error);
         // Music will start on first user interaction
-        document.addEventListener('click', () => {
+        const randomStart = Math.random() * backgroundMusic.duration;
+        backgroundMusic.currentTime = randomStart;
+        document.addEventListener('keydown', () => {
             backgroundMusic.play();
         }, { once: true });
     });
