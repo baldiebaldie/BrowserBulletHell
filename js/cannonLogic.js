@@ -40,7 +40,7 @@ class cannon {
                 spawnPositionX = cannonPosition.right - areaRect.left;
                 spawnPositionY = cannonPosition.top - areaRect.top + (cannonPosition.height / 2);
                 // console.log(spawnPositionX, spawnPositionY, this.side);
-                bulletColor = 'red';
+                // bulletColor = 'red';
                 break;
             case ('cannonSidebarRight'):
                 xVelocity = -1 * bulletSpeed;
@@ -48,7 +48,7 @@ class cannon {
                 spawnPositionX = cannonPosition.left - areaRect.left;
                 spawnPositionY = cannonPosition.top - areaRect.top + (cannonPosition.height / 2);
                 // console.log(spawnPositionX, spawnPositionY, this.side);
-                bulletColor = 'blue';
+                // bulletColor = 'blue';
                 break;
             case ('cannonSidebarTop'):
                 xVelocity = 0;
@@ -56,7 +56,7 @@ class cannon {
                 spawnPositionX = cannonPosition.left - areaRect.left + (cannonPosition.width / 2);
                 spawnPositionY = cannonPosition.bottom - areaRect.top;
                 // console.log(spawnPositionX, spawnPositionY, this.side);
-                bulletColor = 'green';
+                // bulletColor = 'green';
                 break;
             case ('cannonSidebarBottom'):
                 xVelocity = 0;
@@ -64,7 +64,7 @@ class cannon {
                 spawnPositionX = cannonPosition.left - areaRect.left + (cannonPosition.width / 2);
                 spawnPositionY = cannonPosition.top - areaRect.top;
                 // console.log(spawnPositionX, spawnPositionY, this.side);
-                bulletColor = 'purple';
+                // bulletColor = 'purple';
                 break;
         }
 
@@ -172,29 +172,25 @@ export function randomPattern(frameCount, activeBullets, playableArea, myPlayer,
     for (let i = activeBullets.length - 1; i>=0; i--) {
         let b = activeBullets[i];
 
-        //get the actual "Hitbox" rectangles from the DOM elements
-        let playerRect = myPlayer.element.getBoundingClientRect()
-        let bulletRect = b.element.getBoundingClientRect()
-
-
         //moveBullet
         b.x += b.xVelocity;
         b.y += b.yVelocity;
         b.element.style.left = `${b.x}px`;
         b.element.style.top = `${b.y}px`;
+        
+        //get the actual "Hitbox" rectangles from the DOM elements
+        let bulletRect = b.element.getBoundingClientRect()
 
         //check collision first
-        const hit = checkCollision(playerRect, bulletRect);
+        const hit = myPlayer.hasCollided(bulletRect);
+    
         const outOfBounds = checkDespawn(b, playableArea)
-        if(hit) {
-            myPlayer.onHit();
-        }
-
         //despawn logic
         if(hit || outOfBounds) {
             b.element.remove();
             activeBullets.splice(i, 1);
         }
+        
     }
 }
 
@@ -204,14 +200,4 @@ function checkDespawn(bullet, playableArea) {
         return true;
     }
     return false;
-}
-
-export function checkCollision (obj1, obj2) {
-    
-    return (
-        obj1.left < obj2.right && 
-        obj1.right > obj2.left &&
-        obj1.top < obj2.bottom &&
-        obj1.bottom > obj2.top
-    );
 }
