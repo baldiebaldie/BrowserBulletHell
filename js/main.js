@@ -123,7 +123,7 @@ function updateHighScoreDisplay() {
 function initializeLivesDisplay() {
     for (let i = 0; i < maxLives; i++) {
         const heart = document.createElement('img');
-        heart.src = 'assets/heart.png';
+        heart.src = './assets/heart.png';
         heart.classList.add('heart');
         heartsContainer.appendChild(heart);
     }
@@ -202,6 +202,7 @@ if (backgroundMusic) {
     backgroundMusic.addEventListener('loadedmetadata', () => {
         const randomStart = Math.random() * backgroundMusic.duration;
         backgroundMusic.currentTime = randomStart;
+        console.log(randomStart);
     });
 
     backgroundMusic.play().catch(error => {
