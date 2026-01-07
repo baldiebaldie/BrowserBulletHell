@@ -17,7 +17,7 @@ export class player {
         this.isHit = false;
         this.isInvincible = false;
         this.hitTimer = 0;
-        this.invincibilityDuration = 1000; // 1 second of invincibility
+        this.invincibilityDuration = 240; // 1 second of invincibility
         this.flashDuration = 150; // 150ms red flash
 
 

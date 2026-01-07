@@ -101,11 +101,10 @@ export function spawnCannons(count, size, sidebarId) {
     //calculate sizing based on cannon count
     const baseCannonSize = 75;
     const baseGap = 15;
-    const playableAreaSize = 750; 
-    const sidebarPadding = 100; //50px on each side
+    const playableAreaSize = 750;
 
-    //calculate available space (accounting for padding)
-    const availableSpace = playableAreaSize + sidebarPadding;
+    //use playable area as strict limit to prevent dangling cannons
+    const availableSpace = playableAreaSize;
 
     //calculate total space needed with base values
     const totalSpaceNeeded = (count * baseCannonSize) + ((count - 1) * baseGap);
