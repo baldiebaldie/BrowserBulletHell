@@ -21,12 +21,12 @@ export class Cannon {
         let cannonPosition = this.element.getBoundingClientRect();
         let areaRect = playableArea.getBoundingClientRect();
 
-        console.log('📍 Cannon:', this.side);
-        console.log('  Absolute cannon pos:', cannonPosition.left, cannonPosition.top);
-        console.log('  Absolute area offset:', areaRect.left, areaRect.top);
-        console.log('  Area dimensions:', areaRect.width, areaRect.height);
-        // Then after calculating spawnPositionX/Y:
-        console.log('  → Spawn at (relative):', spawnPositionX, spawnPositionY);
+        // console.log('Cannon:', this.side);
+        // console.log('  Absolute cannon pos:', cannonPosition.left, cannonPosition.top);
+        // console.log('  Absolute area offset:', areaRect.left, areaRect.top);
+        // console.log('  Area dimensions:', areaRect.width, areaRect.height);
+        // // Then after calculating spawnPositionX/Y:
+        // console.log('  → Spawn at (relative):', spawnPositionX, spawnPositionY);
 
 
         // console.log(cannonPosition.top , this.side);
@@ -53,7 +53,7 @@ export class Cannon {
                 yVelocity = 0;
                 spawnPositionX = playableArea.offsetWidth - bulletSize;
                 spawnPositionY = ((cannonPosition.top - areaRect.top) / 0.75) + (cannonPosition.height / 0.75 / 2) - (bulletSize / 2);
-                console.log(spawnPositionX, spawnPositionY, this.side, cannonPosition.left, areaRect);
+                // console.log(spawnPositionX, spawnPositionY, this.side, cannonPosition.left, areaRect);
                 // bulletColor = 'blue';
                 break;
             case ('cannonSidebarTop'):
@@ -61,7 +61,7 @@ export class Cannon {
                 yVelocity = 1 * bulletSpeed;
                 spawnPositionX = ((cannonPosition.left - areaRect.left) / 0.75) + (cannonPosition.width / 0.75 / 2) - (bulletSize / 2);
                 spawnPositionY = 0;
-                console.log(spawnPositionX, spawnPositionY, this.side);
+                // console.log(spawnPositionX, spawnPositionY, this.side);
                 // bulletColor = 'green';
                 break;
             case ('cannonSidebarBottom'):
@@ -69,7 +69,7 @@ export class Cannon {
                 yVelocity = -1 * bulletSpeed;
                 spawnPositionX = ((cannonPosition.left - areaRect.left) / 0.75) + (cannonPosition.width / 0.75 / 2) - (bulletSize / 2);
                 spawnPositionY = playableArea.offsetHeight - bulletSize;
-                console.log(spawnPositionX, spawnPositionY, this.side);
+                // console.log(spawnPositionX, spawnPositionY, this.side);
                 // bulletColor = 'purple';
                 break;
         }
