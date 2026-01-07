@@ -196,7 +196,7 @@ updateHighScoreDisplay();
 
 //setup background music
 if (backgroundMusic) {
-    backgroundMusic.volume = 0.5; // Set to half volume
+    backgroundMusic.volume = 0.05; // Set to half volume
 
     // Start at a random position in the song
     backgroundMusic.addEventListener('loadedmetadata', () => {

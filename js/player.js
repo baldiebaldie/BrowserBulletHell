@@ -116,7 +116,10 @@ export class Player {
             
             //play damage effect
             const hitSound = new Audio('/assets/Damaged.mp3');
+            hitSound.volume = 0.1;
+
             hitSound.play();
+            
             this.hitTimer = Date.now();
         }
 
