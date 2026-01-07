@@ -45,6 +45,7 @@ const gameConfig = {
     bulletSpeed: 1,
     fireRate: 100,
     cannonCount: 15,
+    spawnsPerTick: 1,
     onCannonCountChange: null
 };
 
@@ -59,18 +60,22 @@ function calculateDifficultyMultiplier() {
     //higher bullet speed = higher multiplier
     const bulletSpeedFactor = gameConfig.bulletSpeed;
 
-    //higher fire rate = higher multiplier 
+    //higher fire rate = higher multiplier
     const fireRateFactor = 150 / gameConfig.fireRate;
 
     //higher cannon count = higher multiplier
     const cannonCountFactor = gameConfig.cannonCount / 10;
 
+    //higher spawns per tick = higher multiplier
+    const spawnsPerTickFactor = gameConfig.spawnsPerTick;
+
     //combine all factors with weights
     const multiplier = (
-        playerSpeedFactor * 0.3 +
-        bulletSpeedFactor * 0.2 +
-        fireRateFactor * 0.25 +
-        cannonCountFactor * 0.25
+        playerSpeedFactor * 0.25 +
+        bulletSpeedFactor * 0.15 +
+        fireRateFactor * 0.2 +
+        cannonCountFactor * 0.2 +
+        spawnsPerTickFactor * 0.2
     );
 
     return multiplier;
@@ -211,7 +216,7 @@ function update() {
     myPlayer.calculateBounds();
     if(!gameOver) {
         myPlayer.draw();
-        randomPattern(frameCount, activeBullets, playableArea, myPlayer, gameConfig.fireRate, gameConfig.bulletSpeed);
+        randomPattern(frameCount, activeBullets, playableArea, myPlayer, gameConfig.fireRate, gameConfig.bulletSpeed, gameConfig.spawnsPerTick);
 
         //add points based on difficulty
         score += calculatePointsThisFrame();

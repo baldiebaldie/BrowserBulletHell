@@ -158,13 +158,16 @@ export function spawnCannons(count, size, sidebarId) {
     var bottomCannons = allCannons.filter(c => c.side === 'cannonSidebarBottom');
 }
 
-export function randomPattern(frameCount, activeBullets, playableArea, myPlayer, fireRate = 100, bulletSpeed = 1) {
-    //bullet logic (every 50 frames)
+export function randomPattern(frameCount, activeBullets, playableArea, myPlayer, fireRate = 100, bulletSpeed = 1, spawnsPerTick = 1) {
+    //bullet logic (every x frames)
     if(frameCount % fireRate == 0) {
-        let randomCannonIndex = Math.floor(Math.random() * allCannons.length)
-        let randomCannon = allCannons[randomCannonIndex];
+        //spawn multiple bullets based on spawnsPerTick
+        for(let i = 0; i < spawnsPerTick; i++) {
+            let randomCannonIndex = Math.floor(Math.random() * allCannons.length)
+            let randomCannon = allCannons[randomCannonIndex];
 
-        randomCannon.fire(playableArea, activeBullets, bulletSpeed);
+            randomCannon.fire(playableArea, activeBullets, bulletSpeed);
+        }
         // console.log(randomCannon);
     }
 

@@ -5,13 +5,15 @@ export class ControlPanel {
             playerSpeed: document.getElementById('playerSpeedSlider'),
             bulletSpeed: document.getElementById('bulletSpeedSlider'),
             fireRate: document.getElementById('fireRateSlider'),
-            cannonCount: document.getElementById('cannonCountSlider')
+            cannonCount: document.getElementById('cannonCountSlider'),
+            spawnsPerTick: document.getElementById('spawnsPerTickSlider')
         };
         this.valueDisplays = {
             playerSpeed: document.getElementById('playerSpeedValue'),
             bulletSpeed: document.getElementById('bulletSpeedValue'),
             fireRate: document.getElementById('fireRateValue'),
-            cannonCount: document.getElementById('cannonCountValue')
+            cannonCount: document.getElementById('cannonCountValue'),
+            spawnsPerTick: document.getElementById('spawnsPerTickValue')
         };
 
         this.initializeEventListeners();
@@ -49,6 +51,13 @@ export class ControlPanel {
             if (this.gameConfig.onCannonCountChange) {
                 this.gameConfig.onCannonCountChange(value);
             }
+        });
+
+        //spawns Per Tick
+        this.sliders.spawnsPerTick.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            this.gameConfig.spawnsPerTick = value;
+            this.valueDisplays.spawnsPerTick.textContent = value;
         });
     }
 }
