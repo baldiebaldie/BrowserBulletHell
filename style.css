@@ -251,6 +251,50 @@ body{
     display: none;
 }
 
+/* High Score Container */
+#highScoreContainer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+/* High Score Display */
+#highScoreDisplay {
+    color: rgb(255, 215, 0);
+    font-size: 32px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+/* Clear High Score Button */
+#clearHighScoreButton {
+    background: linear-gradient(135deg, rgb(150, 50, 50), rgb(200, 50, 50));
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(200, 50, 50, 0.3);
+    transition: all 0.3s ease;
+}
+
+#clearHighScoreButton:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, rgb(180, 60, 60), rgb(230, 60, 60));
+    box-shadow: 0 4px 12px rgba(200, 50, 50, 0.5);
+}
+
+#clearHighScoreButton:active {
+    transform: scale(0.98);
+}
+
 /* Score Display */
 #scoreDisplay {
     color: rgb(100, 200, 255);
@@ -287,4 +331,31 @@ body{
     text-transform: uppercase;
     letter-spacing: 3px;
     text-shadow: 0 0 10px rgba(255, 50, 50, 0.8);
+    margin-bottom: 30px;
+}
+
+/* Play Again Button */
+#playAgainButton {
+    background: linear-gradient(135deg, rgb(100, 150, 255), rgb(100, 200, 255));
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(100, 150, 255, 0.4);
+    transition: all 0.3s ease;
+}
+
+#playAgainButton:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, rgb(120, 170, 255), rgb(120, 220, 255));
+    box-shadow: 0 6px 20px rgba(100, 150, 255, 0.6);
+}
+
+#playAgainButton:active {
+    transform: scale(0.98);
 }

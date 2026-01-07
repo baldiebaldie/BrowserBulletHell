@@ -9,6 +9,26 @@ const playableArea = document.querySelector('.playableArea');
 const heartsContainer = document.getElementById('heartsContainer');
 const gameOverDisplay = document.getElementById('gameOverDisplay');
 
+//localStorage functions for high score persistence
+function saveHighScore(score) {
+    localStorage.setItem('bulletHellHighScore', score.toString());
+}
+
+function loadHighScore() {
+    const saved = localStorage.getItem('bulletHellHighScore');
+    return saved ? parseInt(saved, 10) : 0;
+}
+
+function clearHighScore() {
+    const confirmed = confirm('Are you sure you want to clear your high score? This cannot be undone.');
+    if (confirmed) {
+        localStorage.removeItem('bulletHellHighScore');
+        highScore = 0;
+        updateHighScoreDisplay();
+        alert('High score cleared!');
+    }
+}
+
 //variables
 var frameCount = 0;
 var cannonSize = 1;
@@ -17,6 +37,7 @@ let maxLives = 3; //adjust this value to change starting lives
 let lives = maxLives;
 let gameOver = false;
 let score = 0;
+let highScore = loadHighScore();
 
 const gameConfig = {
     playerSpeed: 3,
@@ -68,6 +89,14 @@ function updateScoreDisplay() {
     }
 }
 
+//update high score display
+function updateHighScoreDisplay() {
+    const highScoreDisplay = document.getElementById('highScoreDisplay');
+    if (highScoreDisplay) {
+        highScoreDisplay.textContent = `High Score: ${Math.floor(highScore)}`;
+    }
+}
+
 //initialize hearts display
 function initializeLivesDisplay() {
     for (let i = 0; i < maxLives; i++) {
@@ -87,6 +116,12 @@ function updateLivesDisplay() {
 
     if (lives <= 0 && !gameOver) {
         gameOver = true;
+        //update high score if current score is higher
+        if (score > highScore) {
+            highScore = score;
+            saveHighScore(highScore);
+            updateHighScoreDisplay();
+        }
         gameOverDisplay.style.display = 'flex';
         myPlayer.reset();
         // clearScreen();
@@ -134,6 +169,21 @@ const myPlayer = new player(gameConfig.playerSpeed, playableArea, handleLives);
 //initialize lives display
 initializeLivesDisplay();
 
+//initialize high score display
+updateHighScoreDisplay();
+
+//setup play again button
+const playAgainButton = document.getElementById('playAgainButton');
+if (playAgainButton) {
+    playAgainButton.addEventListener('click', resetGame);
+}
+
+//setup clear high score button
+const clearHighScoreButton = document.getElementById('clearHighScoreButton');
+if (clearHighScoreButton) {
+    clearHighScoreButton.addEventListener('click', clearHighScore);
+}
+
 //function which updates each frame
 function update() {
     myPlayer.speed = gameConfig.playerSpeed;
@@ -160,8 +210,35 @@ function update() {
 
 
 function clearScreen() {
+    //clear bullets
+    activeBullets.forEach(bullet => {
+        if (bullet.element && bullet.element.parentNode) {
+            bullet.element.parentNode.removeChild(bullet.element);
+        }
+    });
+    activeBullets.length = 0;
+}
+
+function resetGame() {
+    //reset game state
+    gameOver = false;
+    lives = maxLives;
     score = 0;
+    frameCount = 0;
+
+    //clear screen
+    clearScreen();
+
+    //reset player position
+    myPlayer.reset();
+
+    //update displays
+    updateLivesDisplay();
     updateScoreDisplay();
+    updateHighScoreDisplay();
+
+    //hide game over display
+    gameOverDisplay.style.display = 'none';
 }
 
 function handleLives() {
